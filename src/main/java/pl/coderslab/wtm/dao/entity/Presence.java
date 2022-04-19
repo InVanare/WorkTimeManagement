@@ -1,9 +1,14 @@
 package pl.coderslab.wtm.dao.entity;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "presences")
 public class Presence {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDateTime start;
     private LocalDateTime end;

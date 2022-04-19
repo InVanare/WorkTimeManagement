@@ -1,22 +1,30 @@
 package pl.coderslab.wtm.dao.entity;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
+@Entity
+@Table(name = "organizations")
 public class Organization {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true, nullable = false)
     private String name;
     private Boolean isActive;
-    private Long ownerId;
+    @OneToMany(mappedBy = "organization")
+    private List<User> owner;
     private Integer maxUser;
     private Integer countUser;
     private LocalDateTime created;
 
-    public Organization(Long id, String name, Boolean isActive, Long ownerId, Integer maxUser, Integer countUser, LocalDateTime created) {
+    public Organization(Long id, String name, Boolean isActive, List<User> owner, Integer maxUser, Integer countUser, LocalDateTime created) {
         this.id = id;
         this.name = name;
         this.isActive = isActive;
-        this.ownerId = ownerId;
+        this.owner = owner;
         this.maxUser = maxUser;
         this.countUser = countUser;
         this.created = created;
@@ -49,12 +57,12 @@ public class Organization {
         isActive = active;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
+    public List<User> getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
+    public void setOwner(List<User> owner) {
+        this.owner = owner;
     }
 
     public Integer getMaxUser() {

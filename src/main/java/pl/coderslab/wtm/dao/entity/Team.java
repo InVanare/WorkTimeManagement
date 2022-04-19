@@ -1,10 +1,16 @@
 package pl.coderslab.wtm.dao.entity;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "teams")
 public class Team {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true, nullable = false)
     private String name;
     private Long ownerId;
     private Long organizationId;

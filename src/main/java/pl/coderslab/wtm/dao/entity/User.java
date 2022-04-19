@@ -1,16 +1,27 @@
 package pl.coderslab.wtm.dao.entity;
 
+import org.hibernate.annotations.ColumnDefault;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "users")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true, nullable = false)
     private String name;
     private String password;
+    @Column(unique = true, nullable = false)
     private String mail;
     private Boolean isActive;
     private LocalDateTime created;
     private LocalDateTime lastLogin;
+    @ManyToOne
+    @ColumnDefault("1")
     private Organization organization;
     private Integer teamCount;
 
