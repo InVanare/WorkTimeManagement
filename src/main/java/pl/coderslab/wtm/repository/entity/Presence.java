@@ -1,4 +1,4 @@
-package pl.coderslab.wtm.dao.entity;
+package pl.coderslab.wtm.repository.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,15 +12,17 @@ public class Presence {
     private Long id;
     private LocalDateTime start;
     private LocalDateTime end;
-    private Long userId;
-    private Long organizationId;
+    @OneToOne
+    private User user;
+    @OneToOne
+    private Organization organization;
 
-    public Presence(Long id, LocalDateTime start, LocalDateTime end, Long userId, Long organizationId) {
+    public Presence(Long id, LocalDateTime start, LocalDateTime end, User user, Organization organization) {
         this.id = id;
         this.start = start;
         this.end = end;
-        this.userId = userId;
-        this.organizationId = organizationId;
+        this.user = user;
+        this.organization = organization;
     }
 
     public Presence() {
@@ -50,19 +52,19 @@ public class Presence {
         this.end = end;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Long getOrganizationId() {
-        return organizationId;
+    public Organization getOrganization() {
+        return organization;
     }
 
-    public void setOrganizationId(Long organizationId) {
-        this.organizationId = organizationId;
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
     }
 }

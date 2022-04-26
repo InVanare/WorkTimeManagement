@@ -1,4 +1,4 @@
-package pl.coderslab.wtm.dao.entity;
+package pl.coderslab.wtm.repository.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,19 +14,25 @@ public class Organization {
     @Column(unique = true, nullable = false)
     private String name;
     private Boolean isActive;
+    @OneToOne
+    private User owner;
     @OneToMany(mappedBy = "organization")
-    private List<User> owner;
+    private List<User> users;
     private Integer maxUser;
     private Integer countUser;
+    @OneToMany(mappedBy = "organization")
+    private List<Team> teamList;
     private LocalDateTime created;
 
-    public Organization(Long id, String name, Boolean isActive, List<User> owner, Integer maxUser, Integer countUser, LocalDateTime created) {
+    public Organization(Long id, String name, Boolean isActive, User owner, List<User> users, Integer maxUser, Integer countUser, List<Team> teamList, LocalDateTime created) {
         this.id = id;
         this.name = name;
         this.isActive = isActive;
         this.owner = owner;
+        this.users = users;
         this.maxUser = maxUser;
         this.countUser = countUser;
+        this.teamList = teamList;
         this.created = created;
     }
 
@@ -57,12 +63,20 @@ public class Organization {
         isActive = active;
     }
 
-    public List<User> getOwner() {
+    public User getOwner() {
         return owner;
     }
 
-    public void setOwner(List<User> owner) {
+    public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     public Integer getMaxUser() {
@@ -79,6 +93,14 @@ public class Organization {
 
     public void setCountUser(Integer countUser) {
         this.countUser = countUser;
+    }
+
+    public List<Team> getTeamList() {
+        return teamList;
+    }
+
+    public void setTeamList(List<Team> teamList) {
+        this.teamList = teamList;
     }
 
     public LocalDateTime getCreated() {

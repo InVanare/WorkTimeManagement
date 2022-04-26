@@ -1,7 +1,8 @@
-package pl.coderslab.wtm.dao.entity;
+package pl.coderslab.wtm.repository.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "teams")
@@ -12,16 +13,21 @@ public class Team {
     private Long id;
     @Column(unique = true, nullable = false)
     private String name;
-    private Long ownerId;
-    private Long organizationId;
+    @OneToOne
+    private User owner;
+    @ManyToOne
+    private Organization organization;
+    @ManyToMany
+    private List<User> members;
     private Boolean isActive;
     private LocalDateTime created;
 
-    public Team(Long id, String name, Long ownerId, Long organizationId, Boolean isActive, LocalDateTime created) {
+    public Team(Long id, String name, User owner, Organization organization, List<User> members, Boolean isActive, LocalDateTime created) {
         this.id = id;
         this.name = name;
-        this.ownerId = ownerId;
-        this.organizationId = organizationId;
+        this.owner = owner;
+        this.organization = organization;
+        this.members = members;
         this.isActive = isActive;
         this.created = created;
     }
@@ -45,20 +51,28 @@ public class Team {
         this.name = name;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
+    public User getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
-    public Long getOrganizationId() {
-        return organizationId;
+    public Organization getOrganization() {
+        return organization;
     }
 
-    public void setOrganizationId(Long organizationId) {
-        this.organizationId = organizationId;
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
+
+    public List<User> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<User> members) {
+        this.members = members;
     }
 
     public Boolean getActive() {

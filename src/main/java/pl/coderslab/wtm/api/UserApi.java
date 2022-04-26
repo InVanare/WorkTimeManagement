@@ -1,27 +1,41 @@
 package pl.coderslab.wtm.api;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import pl.coderslab.wtm.dao.entity.User;
+import pl.coderslab.wtm.dto.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import pl.coderslab.wtm.dto.user.UserUpdateDto;
+import pl.coderslab.wtm.repository.entity.User;
+import pl.coderslab.wtm.dto.user.UserDto;
+import pl.coderslab.wtm.dto.user.UserCreationDto;
 import pl.coderslab.wtm.service.UserService;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
 public class UserApi {
 
     private UserService userService;
+    private Mapper mapper;
 
-    public UserApi(UserService userService) {
+    @Autowired
+    public UserApi(UserService userService, Mapper mapper) {
         this.userService = userService;
+        this.mapper = mapper;
     }
 
-    @GetMapping("/get")
-    public Optional<User> getUser() {
-        return userService.findById(1L);
-        //Organization organization = new Organization(1L, "org", true, List.of(user), 10, 0, LocalDateTime.now());
+    @GetMapping("/get/{id}")
+    public UserDto getUser(@PathVariable Long id) {
+        return userService.findById(id);
+    }
 
+    @PostMapping("/add")
+    public UserDto addUser(@RequestBody UserCreationDto userCreationDTO) {
+        User user = mapper.toUser(userCreationDTO);
+        userService.save(user);
+        return mapper.toDto(user);
+    }
+
+    @PutMapping("/update")
+    public UserDto updateUser(@RequestBody UserUpdateDto user) {
+        return userService.update(user);
     }
 }

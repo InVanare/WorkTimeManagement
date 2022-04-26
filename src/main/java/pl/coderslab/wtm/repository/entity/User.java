@@ -1,4 +1,4 @@
-package pl.coderslab.wtm.dao.entity;
+package pl.coderslab.wtm.repository.entity;
 
 import org.hibernate.annotations.ColumnDefault;
 
@@ -14,7 +14,7 @@ public class User {
     private Long id;
     @Column(unique = true, nullable = false)
     private String name;
-    private String password;
+    private String pass;
     @Column(unique = true, nullable = false)
     private String mail;
     private Boolean isActive;
@@ -25,10 +25,10 @@ public class User {
     private Organization organization;
     private Integer teamCount;
 
-    public User(Long id, String name, String password, String mail, Boolean isActive, LocalDateTime created, LocalDateTime lastLogin, Organization organization, Integer teamCount) {
+    public User(Long id, String name, String pass, String mail, Boolean isActive, LocalDateTime created, LocalDateTime lastLogin, Organization organization, Integer teamCount) {
         this.id = id;
         this.name = name;
-        this.password = password;
+        this.pass = pass;
         this.mail = mail;
         this.isActive = isActive;
         this.created = created;
@@ -56,12 +56,12 @@ public class User {
         this.name = name;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPass() {
+        return pass;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPass(String pass) {
+        this.pass = pass;
     }
 
     public String getMail() {
