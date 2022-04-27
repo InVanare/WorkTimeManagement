@@ -1,7 +1,9 @@
 package pl.coderslab.wtm.dto;
 
 import org.springframework.stereotype.Component;
+import pl.coderslab.wtm.dto.organization.OrganizationDto;
 import pl.coderslab.wtm.dto.user.UserDto;
+import pl.coderslab.wtm.repository.entity.Organization;
 import pl.coderslab.wtm.repository.entity.User;
 import pl.coderslab.wtm.dto.user.UserCreationDto;
 
@@ -41,5 +43,14 @@ public class Mapper {
         user.setOrganization(userMap.getOrganization());
         user.setTeamCount(userMap.getTeamCount());
         return user;
+    }
+
+    public OrganizationDto toDto(Organization organization) {
+        return new OrganizationDto(organization.getId(),
+                organization.getName(),
+                organization.getUsers(),
+                organization.getMaxUser(),
+                organization.getCountUser(),
+                organization.getTeamList());
     }
 }

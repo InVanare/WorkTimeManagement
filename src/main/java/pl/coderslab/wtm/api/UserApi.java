@@ -28,8 +28,8 @@ public class UserApi {
     }
 
     @PostMapping("/add")
-    public UserDto addUser(@RequestBody UserCreationDto userCreationDTO) {
-        User user = mapper.toUser(userCreationDTO);
+    public UserDto addUser(@RequestBody UserCreationDto userCreation) {
+        User user = mapper.toUser(userCreation);
         userService.save(user);
         return mapper.toDto(user);
     }

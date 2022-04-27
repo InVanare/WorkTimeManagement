@@ -30,12 +30,6 @@ public class UserService {
         return userRepository.findById(id).map(this::toDto).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    /*
-    TODO:w przyszłości do usunięcia
-    public Iterable<User> findAll() {
-        return userRepository.findAll();
-    }*/
-
     public User save(User user) {
         return userRepository.save(user);
     }
@@ -49,13 +43,6 @@ public class UserService {
         userRepository.save(userMapped);
         return toDto(userMapped);
     }
-
-
-    /*
-    TODO: w przyszłości do usunięcia
-    public void deleteById(Long id) {
-        userRepository.deleteById(id);
-    }*/
 
     //TODO: w przyszłości do usunięcia
     @EventListener(ApplicationReadyEvent.class)

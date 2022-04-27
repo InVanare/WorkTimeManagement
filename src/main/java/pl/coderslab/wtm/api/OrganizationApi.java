@@ -2,7 +2,11 @@ package pl.coderslab.wtm.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.coderslab.wtm.dto.Mapper;
+import pl.coderslab.wtm.dto.organization.OrganizationDto;
+import pl.coderslab.wtm.dto.organization.OrganizationUpdateDto;
 import pl.coderslab.wtm.repository.entity.Organization;
+import pl.coderslab.wtm.repository.entity.User;
 import pl.coderslab.wtm.service.OrganizationService;
 
 import java.util.Optional;
@@ -12,34 +16,28 @@ import java.util.Optional;
 public class OrganizationApi {
 
     private OrganizationService organizationService;
+    private Mapper mapper;
 
     @Autowired
-    public OrganizationApi(OrganizationService organizationService) {
+    public OrganizationApi(OrganizationService organizationService, Mapper mapper) {
         this.organizationService = organizationService;
+        this.mapper = mapper;
     }
 
     @GetMapping("/get/{id}")
-    public Optional<Organization> getOrganization(@PathVariable Long id) {
+    public OrganizationDto getOrganization(@PathVariable Long id) {
         return organizationService.findById(id);
     }
 
-    @GetMapping("/get/all")
-    public Iterable<Organization> getAllOrganization() {
-        return organizationService.findAll();
-    }
-
     @PostMapping("/add")
-    public Organization addOrganization(@RequestBody Organization organization) {
-        return organizationService.save(organization);
+    public OrganizationDto addOrganization(@RequestBody OrganizationCreationDto organizationCreation) {
+        Organization organization = mapper.toUser(userCreation);
+        organizationService.save(organization);
+        return mapper.toDto(organization);
     }
 
     @PutMapping("/update")
-    public Organization updateOrganization(@RequestBody Organization organization) {
-        return organizationService.save(organization);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public void deleteOrganization(@PathVariable Long id) {
-        organizationService.deleteById(id);
+    public OrganizationDto updateOrganization(@RequestBody OrganizationUpdateDto organization) {
+        return organizationService.update(organization);
     }
 }
