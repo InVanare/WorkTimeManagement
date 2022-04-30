@@ -31,9 +31,6 @@ public class UserApi {
     @PostMapping("/add")
     public ResponseEntity<UserDto> addUser(@RequestBody UserCreationDto userCreation) {
         User user = mapper.toUser(userCreation);
-        System.out.println(userCreation.getName());
-        System.out.println(userCreation.getPass());
-        System.out.println(userCreation.getMail());
         userService.save(user);
         return ResponseEntity.ok(mapper.toDto(user));
     }

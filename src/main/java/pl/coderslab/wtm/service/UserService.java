@@ -41,7 +41,6 @@ public class UserService {
                     u.setPass(userUpdate.getPass());
                     u.setMail(userUpdate.getMail());
                     u.setActive(userUpdate.getIsActive());
-                    System.out.println("test2");
                     return u;
                 });
 

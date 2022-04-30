@@ -42,7 +42,6 @@ public class OrganizationService {
                 .map(org -> {
                     org.setName(organizationUpdate.getName());
                     org.setActive(organizationUpdate.getActive());
-                    System.out.println("test1");
                     return org;
                 });
 
