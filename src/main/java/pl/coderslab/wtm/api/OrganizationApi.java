@@ -8,7 +8,6 @@ import pl.coderslab.wtm.dto.organization.OrganizationCreationDto;
 import pl.coderslab.wtm.dto.organization.OrganizationDto;
 import pl.coderslab.wtm.dto.organization.OrganizationUpdateDto;
 import pl.coderslab.wtm.repository.entity.Organization;
-import pl.coderslab.wtm.repository.entity.User;
 import pl.coderslab.wtm.service.OrganizationService;
 
 import java.util.Optional;
@@ -32,10 +31,10 @@ public class OrganizationApi {
     }
 
     @PostMapping("/add")
-    public OrganizationDto addOrganization(@RequestBody OrganizationCreationDto organizationCreation) {
+    public ResponseEntity<OrganizationDto> addOrganization(@RequestBody OrganizationCreationDto organizationCreation) {
         Organization organization = mapper.toOrganization(organizationCreation);
         organizationService.save(organization);
-        return mapper.toDto(organization);
+        return ResponseEntity.ok(mapper.toDto(organization));
     }
 
     @PutMapping("/update")

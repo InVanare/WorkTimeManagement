@@ -1,5 +1,6 @@
 package pl.coderslab.wtm.api;
 
+import org.springframework.http.ResponseEntity;
 import pl.coderslab.wtm.dto.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,19 +24,22 @@ public class UserApi {
     }
 
     @GetMapping("/get/{id}")
-    public UserDto getUser(@PathVariable Long id) {
-        return userService.findById(id);
+    public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
+        return ResponseEntity.of(userService.findById(id));
     }
 
     @PostMapping("/add")
-    public UserDto addUser(@RequestBody UserCreationDto userCreation) {
+    public ResponseEntity<UserDto> addUser(@RequestBody UserCreationDto userCreation) {
         User user = mapper.toUser(userCreation);
+        System.out.println(userCreation.getName());
+        System.out.println(userCreation.getPass());
+        System.out.println(userCreation.getMail());
         userService.save(user);
-        return mapper.toDto(user);
+        return ResponseEntity.ok(mapper.toDto(user));
     }
 
     @PutMapping("/update")
-    public UserDto updateUser(@RequestBody UserUpdateDto user) {
-        return userService.update(user);
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserUpdateDto user) {
+        return ResponseEntity.of(userService.update(user));
     }
 }

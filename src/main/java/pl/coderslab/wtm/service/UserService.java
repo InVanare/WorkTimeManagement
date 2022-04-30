@@ -26,22 +26,31 @@ public class UserService {
         this.mapper = mapper;
     }
 
-    public UserDto findById(Long id) {
-        return userRepository.findById(id).map(this::toDto).orElseThrow(() -> new RuntimeException("User not found"));
+    public Optional<UserDto> findById(Long id) {
+        return userRepository.findById(id).map(this::toDto);
     }
 
     public User save(User user) {
         return userRepository.save(user);
     }
 
-    public UserDto update(UserUpdateDto userUpdate) {
-        Optional<User> user = userRepository.findById(userUpdate.getId());
-        User userMapped = user.map(this::toUser).orElseThrow(() -> new RuntimeException("User not found"));
-        userMapped.setPass(userUpdate.getPass());
-        userMapped.setMail(userUpdate.getMail());
-        userMapped.setActive(userUpdate.getIsActive());
+    public Optional<UserDto> update(UserUpdateDto userUpdate) {
+        Optional<User> user = userRepository
+                .findById(userUpdate.getId())
+                .map(u -> {
+                    u.setPass(userUpdate.getPass());
+                    u.setMail(userUpdate.getMail());
+                    u.setActive(userUpdate.getIsActive());
+                    System.out.println("test2");
+                    return u;
+                });
+
+        if (user.isEmpty()) {
+            return Optional.empty();
+        }
+        User userMapped = user.map(this::toUser).get();
         userRepository.save(userMapped);
-        return toDto(userMapped);
+        return Optional.ofNullable(toDto(userMapped));
     }
 
     //TODO: w przyszłości do usunięcia

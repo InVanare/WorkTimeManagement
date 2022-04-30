@@ -37,21 +37,22 @@ public class OrganizationService {
     }
 
     public Optional<OrganizationDto> update(OrganizationUpdateDto organizationUpdate) {
-        Optional<Organization> organizationMapped = organizationRepository
+        Optional<Organization> organization = organizationRepository
                 .findById(organizationUpdate.getId())
                 .map(org -> {
                     org.setName(organizationUpdate.getName());
                     org.setActive(organizationUpdate.getActive());
+                    System.out.println("test1");
                     return org;
                 });
 
-        if (organizationMapped.isEmpty()) {
+        if (organization.isEmpty()) {
             return Optional.empty();
         }
 
-        Organization organization = organizationMapped.map(this::toOrganization).get();
-        organizationRepository.save(organization);
-        return Optional.ofNullable(toDto(organization));
+        Organization organizationMapped = organization.map(this::toOrganization).get();
+        organizationRepository.save(organizationMapped);
+        return Optional.ofNullable(toDto(organizationMapped));
     }
 
     private OrganizationDto toDto(Organization organization) {
