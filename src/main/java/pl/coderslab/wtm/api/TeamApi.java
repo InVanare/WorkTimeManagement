@@ -35,7 +35,6 @@ public class TeamApi {
 
     @PostMapping("/add")
     public ResponseEntity<TeamDto> addTeam(@RequestBody TeamCreationDto teamCreation) {
-        System.out.println(teamCreation);
         Team team = mapper.toTeam(teamCreation);
         teamService.save(team);
         return ResponseEntity.ok(mapper.toDto(team));
