@@ -12,8 +12,8 @@ import java.util.Optional;
 
 @Service
 public class PresenceService {
-    private PresenceRepository presenceRepository;
-    private Mapper mapper;
+    private final PresenceRepository presenceRepository;
+    private final Mapper mapper;
 
     @Autowired
     public PresenceService(PresenceRepository presenceRepository, Mapper mapper) {

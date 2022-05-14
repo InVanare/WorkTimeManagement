@@ -17,8 +17,8 @@ import java.util.stream.Stream;
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
-    private Mapper mapper;
+    private final UserRepository userRepository;
+    private final Mapper mapper;
 
     @Autowired
     public UserService(UserRepository userRepository, Mapper mapper) {
@@ -52,13 +52,13 @@ public class UserService {
         return Optional.ofNullable(toDto(userMapped));
     }
 
-    //TODO: w przyszłości do usunięcia
+/*    //TODO: w przyszłości do usunięcia
     @EventListener(ApplicationReadyEvent.class)
     public void fillDB() {
         save(new User(1L, "inva", "afdsfsdg", "test@gmail.com", true, LocalDateTime.now(), LocalDateTime.now().plusDays(2), null, 2));
         save(new User(2L, "test", "afdsfsdga123", "test123@gmail.com", true, LocalDateTime.now(), LocalDateTime.now().plusDays(3), null, 20));
 
-    }
+    }*/
 
     private UserDto toDto(User user) {
         return mapper.toDto(user);

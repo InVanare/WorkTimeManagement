@@ -7,20 +7,15 @@ import pl.coderslab.wtm.dto.Mapper;
 import pl.coderslab.wtm.dto.presence.PresenceCreationDto;
 import pl.coderslab.wtm.dto.presence.PresenceDto;
 import pl.coderslab.wtm.dto.presence.PresenceUpdateDto;
-import pl.coderslab.wtm.dto.team.TeamCreationDto;
-import pl.coderslab.wtm.dto.team.TeamDto;
-import pl.coderslab.wtm.dto.team.TeamUpdateDto;
 import pl.coderslab.wtm.repository.entity.Presence;
-import pl.coderslab.wtm.repository.entity.Team;
 import pl.coderslab.wtm.service.PresenceService;
-import pl.coderslab.wtm.service.TeamService;
 
 @RestController
 @RequestMapping("/api/presence")
 public class PresenceApi {
 
-    private PresenceService presenceService;
-    private Mapper mapper;
+    private final PresenceService presenceService;
+    private final Mapper mapper;
 
     @Autowired
     public PresenceApi(PresenceService presenceService, Mapper mapper) {

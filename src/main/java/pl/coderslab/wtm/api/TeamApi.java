@@ -4,23 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.wtm.dto.Mapper;
-import pl.coderslab.wtm.dto.organization.OrganizationCreationDto;
-import pl.coderslab.wtm.dto.organization.OrganizationDto;
-import pl.coderslab.wtm.dto.organization.OrganizationUpdateDto;
 import pl.coderslab.wtm.dto.team.TeamCreationDto;
 import pl.coderslab.wtm.dto.team.TeamDto;
 import pl.coderslab.wtm.dto.team.TeamUpdateDto;
-import pl.coderslab.wtm.repository.entity.Organization;
 import pl.coderslab.wtm.repository.entity.Team;
-import pl.coderslab.wtm.service.OrganizationService;
 import pl.coderslab.wtm.service.TeamService;
 
 @RestController
 @RequestMapping("/api/team")
 public class TeamApi {
 
-    private TeamService teamService;
-    private Mapper mapper;
+    private final TeamService teamService;
+    private final Mapper mapper;
 
     @Autowired
     public TeamApi(TeamService teamService, Mapper mapper) {

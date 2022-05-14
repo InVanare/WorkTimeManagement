@@ -14,8 +14,8 @@ import pl.coderslab.wtm.service.UserService;
 @RequestMapping("/api/user")
 public class UserApi {
 
-    private UserService userService;
-    private Mapper mapper;
+    private final UserService userService;
+    private final Mapper mapper;
 
     @Autowired
     public UserApi(UserService userService, Mapper mapper) {

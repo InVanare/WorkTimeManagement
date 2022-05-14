@@ -1,26 +1,20 @@
 package pl.coderslab.wtm.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import pl.coderslab.wtm.dto.Mapper;
 import pl.coderslab.wtm.dto.organization.OrganizationDto;
 import pl.coderslab.wtm.dto.organization.OrganizationUpdateDto;
-import pl.coderslab.wtm.dto.user.UserDto;
-import pl.coderslab.wtm.dto.user.UserUpdateDto;
 import pl.coderslab.wtm.repository.OrganizationRepository;
 import pl.coderslab.wtm.repository.entity.Organization;
-import pl.coderslab.wtm.repository.entity.User;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
 public class OrganizationService {
 
-    private OrganizationRepository organizationRepository;
-    private Mapper mapper;
+    private final OrganizationRepository organizationRepository;
+    private final Mapper mapper;
 
     @Autowired
     public OrganizationService(OrganizationRepository organizationRepository, Mapper mapper) {

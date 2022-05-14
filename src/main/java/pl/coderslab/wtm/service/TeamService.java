@@ -13,8 +13,8 @@ import java.util.Optional;
 @Service
 public class TeamService {
 
-    private TeamRepository teamRepository;
-    private Mapper mapper;
+    private final TeamRepository teamRepository;
+    private final Mapper mapper;
 
     @Autowired
     public TeamService(TeamRepository teamRepository, Mapper mapper) {

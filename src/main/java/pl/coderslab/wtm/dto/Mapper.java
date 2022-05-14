@@ -21,10 +21,10 @@ import pl.coderslab.wtm.dto.user.UserCreationDto;
 @Component
 public class Mapper {
 
-    private MapperUser mapperUser;
-    private MapperOrganization mapperOrganization;
-    private MapperTeam mapperTeam;
-    private MapperPresence mapperPresence;
+    private final MapperUser mapperUser;
+    private final MapperOrganization mapperOrganization;
+    private final MapperTeam mapperTeam;
+    private final MapperPresence mapperPresence;
 
     public Mapper() {
         this.mapperUser = new MapperUser();

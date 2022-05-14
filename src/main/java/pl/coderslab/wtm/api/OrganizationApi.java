@@ -10,14 +10,12 @@ import pl.coderslab.wtm.dto.organization.OrganizationUpdateDto;
 import pl.coderslab.wtm.repository.entity.Organization;
 import pl.coderslab.wtm.service.OrganizationService;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/api/organization")
 public class OrganizationApi {
 
-    private OrganizationService organizationService;
-    private Mapper mapper;
+    private final OrganizationService organizationService;
+    private final Mapper mapper;
 
     @Autowired
     public OrganizationApi(OrganizationService organizationService, Mapper mapper) {
