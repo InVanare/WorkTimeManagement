@@ -1,12 +1,22 @@
 package pl.coderslab.wtm.dto.user;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
 public class UserCreationDto {
 
+    @Pattern(regexp = "^(?=.*[A-Za-z])[A-Za-z\\d]{5,20}$")
     private String name;
+
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{5,20}$")
     private String pass;
+
+    @Email
     private String mail;
+
     private Boolean isActive;
     private LocalDateTime created;
     private LocalDateTime lastLogin;
@@ -50,4 +60,5 @@ public class UserCreationDto {
     public Integer getTeamCount() {
         return teamCount;
     }
+
 }

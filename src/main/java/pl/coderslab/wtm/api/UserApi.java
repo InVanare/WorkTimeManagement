@@ -9,6 +9,10 @@ import pl.coderslab.wtm.repository.entity.User;
 import pl.coderslab.wtm.dto.user.UserDto;
 import pl.coderslab.wtm.dto.user.UserCreationDto;
 import pl.coderslab.wtm.service.UserService;
+import pl.coderslab.wtm.utility.EnumUpdate;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/user")
@@ -23,20 +27,33 @@ public class UserApi {
         this.mapper = mapper;
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/get/id/{id}")
     public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
         return ResponseEntity.of(userService.findById(id));
     }
 
+    @GetMapping("/get/username/{username}")
+    public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username) {
+        return ResponseEntity.of(userService.findByUsername(username));
+    }
+
     @PostMapping("/add")
-    public ResponseEntity<UserDto> addUser(@RequestBody UserCreationDto userCreation) {
+    public ResponseEntity<UserDto> addUser(@Valid @RequestBody UserCreationDto userCreation) {
         User user = mapper.toUser(userCreation);
         userService.save(user);
         return ResponseEntity.ok(mapper.toDto(user));
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<UserDto> updateUser(@RequestBody UserUpdateDto user) {
-        return ResponseEntity.of(userService.update(user));
+    @PutMapping("/update/password")
+    public ResponseEntity<UserDto> updateUserPassword(@RequestBody UserUpdateDto pass) {
+        return ResponseEntity.of(userService.update(pass, EnumUpdate.PASS));
+    }
+    @PutMapping("/update/mail")
+    public ResponseEntity<UserDto> updateUserMail(@RequestBody UserUpdateDto mail) {
+        return ResponseEntity.of(userService.update(mail, EnumUpdate.MAIL));
+    }
+    @PutMapping("/update/active")
+    public ResponseEntity<UserDto> updateUserActive(@RequestBody UserUpdateDto active) {
+        return ResponseEntity.of(userService.update(active, EnumUpdate.ACTIVE));
     }
 }

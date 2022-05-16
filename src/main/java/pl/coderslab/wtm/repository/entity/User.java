@@ -1,10 +1,13 @@
 package pl.coderslab.wtm.repository.entity;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -19,6 +22,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(unique = true, nullable = false)
     private String username;
     private String password;
@@ -30,7 +34,6 @@ public class User implements UserDetails {
     private LocalDateTime created;
     private LocalDateTime lastLogin;
     @ManyToOne
-    @ColumnDefault("1")
     private Organization organization;
     private Integer teamCount;
     @CreatedBy
@@ -40,10 +43,10 @@ public class User implements UserDetails {
     private boolean credentialsNonExpired = true;
     private boolean enabled = true;
 
-    public User(Long id, String name, String pass, String mail, List<Role> roles, Boolean isActive, LocalDateTime created, LocalDateTime lastLogin, Organization organization, Integer teamCount) {
+    public User(Long id, String username, String password, String mail, List<Role> roles, Boolean isActive, LocalDateTime created, LocalDateTime lastLogin, Organization organization, Integer teamCount) {
         this.id = id;
-        this.username = name;
-        this.password = pass;
+        this.username = username;
+        this.password = encode(password);
         this.mail = mail;
         this.roles = roles;
         this.isActive = isActive;
@@ -56,9 +59,9 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String name, String pass, List<Role> roles) {
-        this.username = name;
-        this.password = pass;
+    public User(String username, String password, List<Role> roles) {
+        this.username = username;
+        this.password = encode(password);
         this.roles = roles;
     }
 
@@ -70,20 +73,22 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getName() {
+    @Override
+    public String getUsername() {
         return username;
     }
 
-    public void setName(String name) {
-        this.username = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getPass() {
+    @Override
+    public String getPassword() {
         return password;
     }
 
-    public void setPass(String pass) {
-        this.password = pass;
+    public void setPassword(String password) {
+        this.password = encode(password);
     }
 
     public String getMail() {
@@ -193,11 +198,7 @@ public class User implements UserDetails {
                 .collect(Collectors.toList());
     }
 
-    public String getUsername() {
-        return username;
+    public String encode(String password){
+        return new BCryptPasswordEncoder().encode(password);
     }
-    public String getPassword() {
-        return password;
-    }
-
 }

@@ -1,36 +1,49 @@
 package pl.coderslab.wtm.dto.user;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 public class UserUpdateDto {
 
-    private Long id;
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{5,20}$")
     private String pass;
+    @Email
     private String mail;
-    private Boolean isActive;
+    @NotNull
+    private Boolean active;
 
-    public UserUpdateDto(Long id, String pass, String mail, Boolean isActive) {
-        this.id = id;
+    public UserUpdateDto(String pass, String mail, Boolean active) {
         this.pass = pass;
         this.mail = mail;
-        this.isActive = isActive;
+        this.active = active;
     }
 
     public UserUpdateDto() {
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getPass() {
         return pass;
     }
 
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
     public String getMail() {
         return mail;
     }
 
-    public Boolean getIsActive() {
-        return isActive;
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }

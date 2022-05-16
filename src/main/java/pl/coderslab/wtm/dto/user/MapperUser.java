@@ -8,7 +8,7 @@ public class MapperUser {
 
     public UserDto toDto(User user) {
         return new UserDto(user.getId(),
-                user.getName(),
+                user.getUsername(),
                 user.getMail(),
                 user.getLastLogin(),
                 user.getOrganization(),
@@ -16,8 +16,8 @@ public class MapperUser {
     }
 
     public User toUser(UserCreationDto userDTO) {
-        user.setName(userDTO.getName());
-        user.setPass(userDTO.getPass());
+        user.setUsername(userDTO.getName());
+        user.setPassword(userDTO.getPass());
         user.setMail(userDTO.getMail());
         user.setActive(userDTO.getActive());
         user.setCreated(userDTO.getCreated());
@@ -28,8 +28,8 @@ public class MapperUser {
 
     public User toUser(User userMap) {
         user.setId(userMap.getId());
-        user.setName(userMap.getName());
-        user.setPass(userMap.getPass());
+        user.setUsername(userMap.getUsername());
+        user.setPassword(userMap.getPassword());
         user.setMail(userMap.getMail());
         user.setActive(userMap.getActive());
         user.setCreated(userMap.getCreated());

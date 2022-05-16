@@ -1,70 +1,97 @@
 package pl.coderslab.wtm.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.coderslab.wtm.dto.user.UserUpdateDto;
 import pl.coderslab.wtm.repository.UserRepository;
 import pl.coderslab.wtm.repository.entity.User;
 import pl.coderslab.wtm.dto.Mapper;
 import pl.coderslab.wtm.dto.user.UserDto;
+import pl.coderslab.wtm.utility.EnumUpdate;
+import pl.coderslab.wtm.utility.Validation;
 
-import java.time.LocalDateTime;
+import javax.persistence.EntityExistsException;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final Mapper mapper;
+    private final Validation validation;
 
     @Autowired
-    public UserService(UserRepository userRepository, Mapper mapper) {
+    public UserService(UserRepository userRepository, Mapper mapper, Validation validation) {
         this.userRepository = userRepository;
         this.mapper = mapper;
+        this.validation = validation;
     }
 
     public Optional<UserDto> findById(Long id) {
-        return userRepository.findById(id).map(this::toDto);
+        //authentication = SecurityContextHolder.getContext().getAuthentication();
+        //if (authentication.)
+        return userRepository.findById(id).map(mapper::toDto);
     }
 
-    public User save(User user) {
-        return userRepository.save(user);
+    public Optional<UserDto> findByUsername(String username) {
+        if (getName().equals(username)) {
+            return userRepository.findByUsername(username).map(mapper::toDto);
+        }
+        return Optional.empty();
     }
 
-    public Optional<UserDto> update(UserUpdateDto userUpdate) {
-        Optional<User> user = userRepository
-                .findById(userUpdate.getId())
-                .map(u -> {
-                    u.setPass(userUpdate.getPass());
-                    u.setMail(userUpdate.getMail());
-                    u.setActive(userUpdate.getIsActive());
-                    return u;
-                });
+
+    public void save(User user) {
+        userRepository.save(user);
+    }
+
+    public Optional<UserDto> update(UserUpdateDto userUpdate, EnumUpdate enumUpdate) {
+        Optional<User> user = userRepository.findByUsername(getName());
 
         if (user.isEmpty()) {
             return Optional.empty();
         }
-        User userMapped = user.map(this::toUser).get();
-        userRepository.save(userMapped);
-        return Optional.ofNullable(toDto(userMapped));
+        User userMapped = user.get();
+
+        switch (enumUpdate) {
+            case PASS:
+                if (validation.validateUserUpdate(userUpdate.getPass(), enumUpdate)) {
+                    userMapped.setPassword(userUpdate.getPass());
+                    userRepository.save(userMapped);
+                }
+                break;
+            case MAIL:
+                if (validation.validateUserUpdate(userUpdate.getMail(), enumUpdate)) {
+                    userMapped.setMail(userUpdate.getMail());
+                    userRepository.save(userMapped);
+                }
+                break;
+            case ACTIVE:
+                try {
+                    if (validation.validateUserUpdate(userUpdate.getActive(), enumUpdate)) {
+                        userMapped.setActive(userUpdate.getActive());
+                        userRepository.save(userMapped);
+                    }
+                    break;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+        }
+
+        return Optional.ofNullable(mapper.toDto(userMapped));
     }
 
-/*    //TODO: w przyszłości do usunięcia
-    @EventListener(ApplicationReadyEvent.class)
-    public void fillDB() {
-        save(new User(1L, "inva", "afdsfsdg", "test@gmail.com", true, LocalDateTime.now(), LocalDateTime.now().plusDays(2), null, 2));
-        save(new User(2L, "test", "afdsfsdga123", "test123@gmail.com", true, LocalDateTime.now(), LocalDateTime.now().plusDays(3), null, 20));
-
-    }*/
-
-    private UserDto toDto(User user) {
-        return mapper.toDto(user);
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityExistsException("User " + username + " doesn't exist"));
     }
 
-    private User toUser(User user) {
-        return mapper.toUser(user);
+    public String getName() {
+        return SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
     }
 }
