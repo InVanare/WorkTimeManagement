@@ -1,10 +1,12 @@
 package pl.coderslab.wtm.dto.user;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import pl.coderslab.wtm.repository.entity.Role;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class UserCreationDto {
 
@@ -21,6 +23,7 @@ public class UserCreationDto {
     private LocalDateTime created;
     private LocalDateTime lastLogin;
     private Integer teamCount;
+    private List<Role> role;
 
     public UserCreationDto(String name, String pass, String mail) {
         LocalDateTime time = LocalDateTime.now();
@@ -61,4 +64,11 @@ public class UserCreationDto {
         return teamCount;
     }
 
+    public List<Role> getRole() {
+        return role;
+    }
+
+    public void setRole(List<Role> role) {
+        this.role = role;
+    }
 }

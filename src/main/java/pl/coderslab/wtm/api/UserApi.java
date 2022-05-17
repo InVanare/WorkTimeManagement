@@ -11,7 +11,6 @@ import pl.coderslab.wtm.dto.user.UserCreationDto;
 import pl.coderslab.wtm.service.UserService;
 import pl.coderslab.wtm.utility.EnumUpdate;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -37,11 +36,14 @@ public class UserApi {
         return ResponseEntity.of(userService.findByUsername(username));
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<UserDto> addUser(@Valid @RequestBody UserCreationDto userCreation) {
-        User user = mapper.toUser(userCreation);
-        userService.save(user);
-        return ResponseEntity.ok(mapper.toDto(user));
+    @GetMapping("/get/my")
+    public ResponseEntity<UserDto> getUserByMe() {
+        return ResponseEntity.of(userService.getUserByMe());
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserCreationDto userCreation) {
+        return ResponseEntity.of(userService.register(userCreation));
     }
 
     @PutMapping("/update/password")

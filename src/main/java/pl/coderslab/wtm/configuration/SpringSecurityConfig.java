@@ -38,7 +38,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf()
                 .ignoringAntMatchers("/**")
                 .and()
-                .authorizeRequests().antMatchers("/login", "/register").permitAll().
+                .authorizeRequests().antMatchers("/login", "/api/user/register").permitAll().
                 // all other requests need to be authenticated
                         anyRequest().authenticated().and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))

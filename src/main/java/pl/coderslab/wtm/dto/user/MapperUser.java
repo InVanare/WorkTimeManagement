@@ -23,6 +23,7 @@ public class MapperUser {
         user.setCreated(userDTO.getCreated());
         user.setLastLogin(userDTO.getLastLogin());
         user.setTeamCount(userDTO.getTeamCount());
+        user.setRoles(userDTO.getRole());
         return user;
     }
 
