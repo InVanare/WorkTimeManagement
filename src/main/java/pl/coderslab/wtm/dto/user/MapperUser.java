@@ -1,6 +1,11 @@
 package pl.coderslab.wtm.dto.user;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import pl.coderslab.wtm.dto.Mapper;
+import pl.coderslab.wtm.dto.organization.MapperOrganization;
 import pl.coderslab.wtm.repository.entity.User;
+
+import java.util.stream.Collectors;
 
 public class MapperUser {
 
@@ -11,7 +16,7 @@ public class MapperUser {
                 user.getUsername(),
                 user.getMail(),
                 user.getLastLogin(),
-                user.getOrganization(),
+                user.getOrganization().getName(),
                 user.getTeamCount());
     }
 

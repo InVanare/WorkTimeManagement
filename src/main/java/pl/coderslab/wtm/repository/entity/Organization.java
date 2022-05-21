@@ -18,19 +18,17 @@ public class Organization {
     private User owner;
     @OneToMany(mappedBy = "organization")
     private List<User> users;
-    private Integer maxUser;
     private Integer countUser;
     @OneToMany(mappedBy = "organization")
     private List<Team> teamList;
     private LocalDateTime created;
 
-    public Organization(Long id, String name, Boolean isActive, User owner, List<User> users, Integer maxUser, Integer countUser, List<Team> teamList, LocalDateTime created) {
+    public Organization(Long id, String name, Boolean isActive, User owner, List<User> users, Integer countUser, List<Team> teamList, LocalDateTime created) {
         this.id = id;
         this.name = name;
         this.isActive = isActive;
         this.owner = owner;
         this.users = users;
-        this.maxUser = maxUser;
         this.countUser = countUser;
         this.teamList = teamList;
         this.created = created;
@@ -77,14 +75,6 @@ public class Organization {
 
     public void setUsers(List<User> users) {
         this.users = users;
-    }
-
-    public Integer getMaxUser() {
-        return maxUser;
-    }
-
-    public void setMaxUser(Integer maxUser) {
-        this.maxUser = maxUser;
     }
 
     public Integer getCountUser() {

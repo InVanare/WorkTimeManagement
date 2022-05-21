@@ -1,9 +1,7 @@
 package pl.coderslab.wtm.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,10 +14,10 @@ import pl.coderslab.wtm.repository.entity.User;
 import pl.coderslab.wtm.dto.Mapper;
 import pl.coderslab.wtm.dto.user.UserDto;
 import pl.coderslab.wtm.utility.EnumUpdate;
+import pl.coderslab.wtm.utility.SecurityContext;
 import pl.coderslab.wtm.utility.Validation;
 
 import javax.persistence.EntityExistsException;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,18 +28,20 @@ public class UserService implements UserDetailsService {
     private final RoleRepository roleRepository;
     private final Mapper mapper;
     private final Validation validation;
+    private final SecurityContext securityContext;
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, Mapper mapper, Validation validation) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, Mapper mapper, Validation validation, SecurityContext securityContext) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.mapper = mapper;
         this.validation = validation;
+        this.securityContext = securityContext;
     }
 
     public Optional<UserDto> findById(Long id) {
 
-        for (GrantedAuthority single : securityGetAuthorities()) {
+        for (GrantedAuthority single : securityContext.getAuthorities()) {
             if (single.getAuthority().equals("ROLE_ADMIN")) {
                 return userRepository.findById(id).map(mapper::toDto);
             }
@@ -50,14 +50,14 @@ public class UserService implements UserDetailsService {
     }
 
     public Optional<UserDto> findByUsername(String username) {
-        if (securityGetName().equals(username)) {
+        if (securityContext.getName().equals(username)) {
             return userRepository.findByUsername(username).map(mapper::toDto);
         }
         return Optional.empty();
     }
 
     public Optional<UserDto> getUserByMe() {
-        return userRepository.findByUsername(securityGetName()).map(mapper::toDto);
+        return userRepository.findByUsername(securityContext.getName()).map(mapper::toDto);
     }
 
     public void save(User user) {
@@ -75,8 +75,7 @@ public class UserService implements UserDetailsService {
     }
 
     public Optional<UserDto> update(UserUpdateDto userUpdate, EnumUpdate enumUpdate) {
-        System.out.println(userUpdate.getPass());
-        Optional<User> user = userRepository.findByUsername(securityGetName());
+        Optional<User> user = userRepository.findByUsername(securityContext.getName());
 
         if (user.isEmpty()) {
             return Optional.empty();
@@ -115,13 +114,5 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityExistsException("User " + username + " doesn't exist"));
-    }
-
-    public String securityGetName() {
-        return SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-    }
-
-    public List<GrantedAuthority> securityGetAuthorities() {
-        return (List<GrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
     }
 }

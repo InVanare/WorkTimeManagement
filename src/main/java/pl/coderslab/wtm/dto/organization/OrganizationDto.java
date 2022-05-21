@@ -1,5 +1,6 @@
 package pl.coderslab.wtm.dto.organization;
 
+import pl.coderslab.wtm.dto.user.UserDto;
 import pl.coderslab.wtm.repository.entity.Team;
 import pl.coderslab.wtm.repository.entity.User;
 
@@ -9,16 +10,16 @@ public class OrganizationDto {
 
     private Long id;
     private String name;
-    private List<User> users;
-    private Integer maxUser;
+    private String owner;
+    private List<String> users;
     private Integer countUser;
     private List<Team> teamList;
 
-    public OrganizationDto(Long id, String name, List<User> users, Integer maxUser, Integer countUser, List<Team> teamList) {
+    public OrganizationDto(Long id, String name, String owner, List<String> users, Integer countUser, List<Team> teamList) {
         this.id = id;
         this.name = name;
+        this.owner = owner;
         this.users = users;
-        this.maxUser = maxUser;
         this.countUser = countUser;
         this.teamList = teamList;
     }
@@ -31,12 +32,12 @@ public class OrganizationDto {
         return name;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public String getOwner() {
+        return owner;
     }
 
-    public Integer getMaxUser() {
-        return maxUser;
+    public List<String> getUsers() {
+        return users;
     }
 
     public Integer getCountUser() {

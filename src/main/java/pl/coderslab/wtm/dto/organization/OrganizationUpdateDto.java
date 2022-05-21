@@ -1,22 +1,20 @@
 package pl.coderslab.wtm.dto.organization;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 public class OrganizationUpdateDto {
 
-    private Long id;
+    @Pattern(regexp = "^(?=.*[A-Za-z])[A-Za-z\\d]{2,20}$")
     private String name;
+
+    @NotNull
     private Boolean isActive;
 
-    public OrganizationUpdateDto(Long id, String name, Boolean isActive) {
-        this.id = id;
+    public OrganizationUpdateDto( String name, Boolean isActive) {
         this.name = name;
         this.isActive = isActive;
-    }
-
-    public OrganizationUpdateDto() {
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getName() {
