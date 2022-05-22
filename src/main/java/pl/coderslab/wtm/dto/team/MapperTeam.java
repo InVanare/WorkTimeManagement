@@ -5,28 +5,27 @@ import pl.coderslab.wtm.dto.user.UserDto;
 import pl.coderslab.wtm.repository.entity.Team;
 import pl.coderslab.wtm.repository.entity.User;
 
-public class MapperTeam {
+import java.util.stream.Collectors;
 
-    private Team team = new Team();
+public class MapperTeam {
 
     public TeamDto toDto(Team team) {
         return new TeamDto(team.getId(),
                 team.getName(),
-                team.getOrganization(),
-                team.getMembers());
+                team.getOrganization().getName(),
+                team.getMembers().stream().map(User::getUsername).collect(Collectors.toList()));
     }
 
     public Team toTeam(TeamCreationDto teamDTO) {
+        Team team = new Team();
         team.setName(teamDTO.getName());
-        team.setOwner(teamDTO.getOwner());
-        team.setOrganization(teamDTO.getOrganization());
-        team.setMembers(teamDTO.getMembers());
         team.setActive(teamDTO.getActive());
         team.setCreated(teamDTO.getCreated());
         return team;
     }
 
     public Team toTeam(Team teamMap) {
+        Team team = new Team();
         team.setId(teamMap.getId());
         team.setName(teamMap.getName());
         team.setOwner(teamMap.getOwner());

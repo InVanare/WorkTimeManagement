@@ -11,7 +11,7 @@ public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String name;
     @OneToOne
     private User owner;

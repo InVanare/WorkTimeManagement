@@ -10,6 +10,9 @@ import pl.coderslab.wtm.dto.team.TeamUpdateDto;
 import pl.coderslab.wtm.repository.entity.Team;
 import pl.coderslab.wtm.service.TeamService;
 
+import javax.validation.Valid;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/team")
 public class TeamApi {
@@ -23,20 +26,28 @@ public class TeamApi {
         this.mapper = mapper;
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/get/id/{id}")
     public ResponseEntity<TeamDto> getTeam(@PathVariable Long id) {
         return ResponseEntity.of(teamService.findById(id));
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<TeamDto> addTeam(@RequestBody TeamCreationDto teamCreation) {
-        Team team = mapper.toTeam(teamCreation);
-        teamService.save(team);
-        return ResponseEntity.ok(mapper.toDto(team));
+    @GetMapping("/get/teamname/{name}")
+    public ResponseEntity<TeamDto> getTeamByName(@PathVariable String name) {
+        return ResponseEntity.of(teamService.findByName(name));
+    }
+
+    @GetMapping("/get/my")
+    public ResponseEntity<List<TeamDto>> getTeamByMe() {
+        return ResponseEntity.ok(teamService.getTeamByMe());
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<TeamDto> addTeam(@Valid @RequestBody TeamCreationDto teamCreation) {
+        return ResponseEntity.of(teamService.create(teamCreation));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<TeamDto> updateTeam(@RequestBody TeamUpdateDto team) {
+    public ResponseEntity<TeamDto> updateTeam(@Valid @RequestBody TeamUpdateDto team) {
         return ResponseEntity.of(teamService.update(team));
     }
 }

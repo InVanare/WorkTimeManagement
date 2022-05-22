@@ -3,41 +3,30 @@ package pl.coderslab.wtm.dto.team;
 import pl.coderslab.wtm.repository.entity.Organization;
 import pl.coderslab.wtm.repository.entity.User;
 
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class TeamCreationDto {
 
+    @Pattern(regexp = "^(?=.*[A-Za-z])[A-Za-z\\d]{3,20}$")
     private String name;
-    private User owner;
-    private Organization organization;
-    private List<User> members;
     private Boolean isActive;
     private LocalDateTime created;
 
-    public TeamCreationDto(String name, User owner, Organization organization, List<User> members, Boolean isActive, LocalDateTime created) {
+    public TeamCreationDto(String name) {
         this.name = name;
-        this.owner = owner;
-        this.organization = organization;
-        this.members = members;
+        this.isActive = true;
+        this.created = LocalDateTime.now();
+    }
+
+    public TeamCreationDto() {
         this.isActive = true;
         this.created = LocalDateTime.now();
     }
 
     public String getName() {
         return name;
-    }
-
-    public User getOwner() {
-        return owner;
-    }
-
-    public Organization getOrganization() {
-        return organization;
-    }
-
-    public List<User> getMembers() {
-        return members;
     }
 
     public Boolean getActive() {
@@ -48,15 +37,4 @@ public class TeamCreationDto {
         return created;
     }
 
-    @Override
-    public String toString() {
-        return "TeamCreationDto{" +
-                "name='" + name + '\'' +
-                ", owner=" + owner +
-                ", organization=" + organization +
-                ", members=" + members +
-                ", isActive=" + isActive +
-                ", created=" + created +
-                '}';
-    }
 }

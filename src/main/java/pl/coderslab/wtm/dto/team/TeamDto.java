@@ -9,10 +9,10 @@ public class TeamDto {
 
     private Long id;
     private String name;
-    private Organization organization;
-    private List<User> members;
+    private String organization;
+    private List<String> members;
 
-    public TeamDto(Long id, String name, Organization organization, List<User> members) {
+    public TeamDto(Long id, String name, String organization, List<String> members) {
         this.id = id;
         this.name = name;
         this.organization = organization;
@@ -27,11 +27,11 @@ public class TeamDto {
         return name;
     }
 
-    public Organization getOrganization() {
+    public String getOrganization() {
         return organization;
     }
 
-    public List<User> getMembers() {
+    public List<String> getMembers() {
         return members;
     }
 }

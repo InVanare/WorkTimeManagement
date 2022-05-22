@@ -105,6 +105,10 @@ public class OrganizationService {
         return Optional.ofNullable(mapper.toDto(organizationMappedByOwner));
     }
 
+    public Optional<OrganizationDto> addUser(String name) {
+        return Optional.empty();
+    }
+
     private Boolean isMember(List<User> userList, String username) {
         for (User singleUser : userList) {
             if (singleUser.getUsername().equals(username)) {
