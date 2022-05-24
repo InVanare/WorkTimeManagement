@@ -10,6 +10,6 @@ import java.util.Optional;
 
 public interface TeamRepository extends CrudRepository<Team, Long> {
     Optional<Team> findByOwner(String name);
-    Optional<Team> findByName(String name);
-    List<Optional<Team>> findAllByOwner(User user);
+    List<Optional<Team>> findByName(String name);
+    List<Optional<Team>> findAllByOwnerAndIsActive(User user, Boolean bool);
 }

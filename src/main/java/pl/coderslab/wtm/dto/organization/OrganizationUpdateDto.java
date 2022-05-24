@@ -6,6 +6,7 @@ import javax.validation.constraints.Pattern;
 
 public class OrganizationUpdateDto {
 
+    @NotEmpty
     @Pattern(regexp = "^(?=.*[A-Za-z])[A-Za-z\\d]{2,20}$")
     private String name;
 

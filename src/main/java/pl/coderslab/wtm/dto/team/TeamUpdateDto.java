@@ -1,23 +1,31 @@
 package pl.coderslab.wtm.dto.team;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 public class TeamUpdateDto {
 
-    private Long id;
-    private String name;
+    @NotEmpty
+    private String nameTeam;
+    @NotEmpty
+    @Pattern(regexp = "^(?=.*[A-Za-z])[A-Za-z\\d]{3,20}$")
+    private String nameToUpdate;
+    @NotNull
     private Boolean isActive;
 
-    public TeamUpdateDto(Long id, String name, Boolean isActive) {
-        this.id = id;
-        this.name = name;
+    public TeamUpdateDto(String nameTeam, String nameToUpdate, Boolean isActive) {
+        this.nameTeam = nameTeam;
+        this.nameToUpdate = nameToUpdate;
         this.isActive = isActive;
     }
 
-    public Long getId() {
-        return id;
+    public String getNameTeam() {
+        return nameTeam;
     }
 
-    public String getName() {
-        return name;
+    public String getNameToUpdate() {
+        return nameToUpdate;
     }
 
     public Boolean getActive() {

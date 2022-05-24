@@ -51,16 +51,22 @@ public class TeamService {
     }
 
     public Optional<TeamDto> findByName(String name) {
-        Optional<Team> team = teamRepository.findByName(name);
+        List<Optional<Team>> teams = teamRepository.findByName(name);
         String username = securityContext.getName();
 
-        if (team.isEmpty()) {
+        if (teams.isEmpty()) {
             return Optional.empty();
         }
-        Team teamMapped = team.get();
-        if (username.equals(teamMapped.getOwner().getUsername()) || isMember(teamMapped.getMembers(), username)) {
-            return team.map(mapper::toDto);
+
+
+        //Team teamMapped = teams.stream().filter(team -> team.get().getOwner().equals(name)).findFirst().orElseThrow(RuntimeException::new).get();
+        for (Optional<Team> singleTeam : teams) {
+            Team team = singleTeam.orElseThrow(RuntimeException::new);
+            if (username.equals(team.getOwner().getUsername()) || isMember(team.getMembers(), username)) {
+                return Optional.ofNullable(mapper.toDto(team));
+            }
         }
+
         return Optional.empty();
     }
 
@@ -86,7 +92,7 @@ public class TeamService {
     public Optional<TeamDto> create(TeamCreationDto teamCreation) {
         User user = userRepository.findByUsername(securityContext.getName()).orElseThrow(RuntimeException::new);
         Optional<Organization> organization = organizationRepository.findByOwnerAndIsActive(user, true);
-        List<Optional<Team>> teams = teamRepository.findAllByOwner(user);
+        List<Optional<Team>> teams = teamRepository.findAllByOwnerAndIsActive(user, true);
 
         if (organization.isEmpty()) {
             return Optional.empty();
@@ -109,20 +115,32 @@ public class TeamService {
     }
 
     public Optional<TeamDto> update(TeamUpdateDto teamUpdate) {
-        Optional<Team> team = teamRepository
-                .findById(teamUpdate.getId())
-                .map(u -> {
-                    u.setName(teamUpdate.getName());
-                    u.setActive(teamUpdate.getActive());
-                    return u;
-                });
-
+        System.out.println(teamUpdate.getNameTeam());
+        System.out.println(teamUpdate.getNameToUpdate());
+        System.out.println(teamUpdate.getActive());
+        Optional<User> user = userRepository.findByUsername(securityContext.getName());
+        List<Optional<Team>> team = teamRepository.findAllByOwnerAndIsActive(user.orElseThrow(RuntimeException::new), true);
         if (team.isEmpty()) {
             return Optional.empty();
         }
-        Team teamMapped = team.map(mapper::toTeam).get();
-        teamRepository.save(teamMapped);
-        return Optional.ofNullable(mapper.toDto(teamMapped));
+
+        Team teamMapped;
+        for (Optional<Team> singleTeam : team) {
+            if (singleTeam.get().getName().equals(teamUpdate.getNameTeam())) {
+                for (Optional<Team> singleTeam1 : team) {
+                    if (singleTeam1.get().getName().equals(teamUpdate.getNameToUpdate())) {
+                        return Optional.empty();
+                    }
+                }
+                teamMapped = singleTeam.get();
+                teamMapped.setName(teamUpdate.getNameToUpdate());
+                teamMapped.setActive(teamUpdate.getActive());
+                teamRepository.save(teamMapped);
+                return Optional.ofNullable(mapper.toDto(teamMapped));
+            }
+        }
+
+        return Optional.empty();
     }
 
     private Boolean isMember(List<User> userList, String username) {
