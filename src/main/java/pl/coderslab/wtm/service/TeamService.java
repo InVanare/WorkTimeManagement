@@ -111,6 +111,8 @@ public class TeamService {
         teamMapped.setOrganization(organization.get());
         teamMapped.setMembers(List.of(user));
         save(teamMapped);
+        user.setTeamCount(user.getTeamCount()+1);
+        userRepository.save(user);
         return Optional.ofNullable(mapper.toDto(teamMapped));
     }
 

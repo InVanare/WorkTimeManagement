@@ -74,14 +74,16 @@ public class OrganizationService {
     public Optional<OrganizationDto> creatOrganization(OrganizationCreationDto organizationCreation) {
         String username = securityContext.getName();
         if (findByOwnerAndIsActive(username, true).isEmpty()) {
-            User user = userRepository.findByUsername(username).orElseThrow(RuntimeException::new);
-            organizationCreation.setOwner(user);
-            Organization organization = mapper.toOrganization(organizationCreation);
-            organization.setUsers(List.of(user));
-            save(organization);
-            user.setOrganization(organization);
-            userRepository.save(user);
-            return Optional.ofNullable(mapper.toDto(organization));
+            if (organizationRepository.findByName(organizationCreation.getName()).isEmpty()){
+                User user = userRepository.findByUsername(username).orElseThrow(RuntimeException::new);
+                organizationCreation.setOwner(user);
+                Organization organization = mapper.toOrganization(organizationCreation);
+                organization.setUsers(List.of(user));
+                save(organization);
+                user.setOrganization(organization);
+                userRepository.save(user);
+                return Optional.ofNullable(mapper.toDto(organization));
+            }
         }
         return Optional.empty();
     }

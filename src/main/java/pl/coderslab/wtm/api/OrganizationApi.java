@@ -43,7 +43,6 @@ public class OrganizationApi {
 
     @GetMapping("/add/user/{name}")
     public ResponseEntity<OrganizationDto> addUserToOrganization(@PathVariable String name) {
-        System.out.println(name);
         return ResponseEntity.of(organizationService.addUser(name));
     }
 
