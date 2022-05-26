@@ -46,6 +46,11 @@ public class OrganizationApi {
         return ResponseEntity.of(organizationService.addUser(name));
     }
 
+    @GetMapping("/remove/user/{name}")
+    public ResponseEntity<OrganizationDto> removeUserToOrganization(@PathVariable String name) {
+        return ResponseEntity.of(organizationService.removeUser(name));
+    }
+
     @PostMapping("/create")
     public ResponseEntity<OrganizationDto> addOrganization(@Valid @RequestBody OrganizationCreationDto organizationCreation) {
         return ResponseEntity.of(organizationService.creatOrganization(organizationCreation));

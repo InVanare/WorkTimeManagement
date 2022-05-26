@@ -13,9 +13,9 @@ public class OrganizationDto {
     private String owner;
     private List<String> users;
     private Integer countUser;
-    private List<Team> teamList;
+    private List<String> teamList;
 
-    public OrganizationDto(Long id, String name, String owner, List<String> users, Integer countUser, List<Team> teamList) {
+    public OrganizationDto(Long id, String name, String owner, List<String> users, Integer countUser, List<String> teamList) {
         this.id = id;
         this.name = name;
         this.owner = owner;
@@ -44,7 +44,7 @@ public class OrganizationDto {
         return countUser;
     }
 
-    public List<Team> getTeamList() {
+    public List<String> getTeamList() {
         return teamList;
     }
 }

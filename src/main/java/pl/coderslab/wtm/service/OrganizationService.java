@@ -108,7 +108,70 @@ public class OrganizationService {
     }
 
     public Optional<OrganizationDto> addUser(String name) {
-        return Optional.empty();
+        Optional<User> owner = userRepository.findByUsername(securityContext.getName());
+        if (owner.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Optional<User> userToAdd = userRepository.findByUsername(name);
+        if (userToAdd.isEmpty()) {
+            return Optional.empty();
+        }
+        if (userToAdd.orElseThrow(RuntimeException::new).getOrganization() != null) {
+            return Optional.empty();
+        }
+
+        Optional<Organization> organization = organizationRepository.findByOwnerAndIsActive(owner.get(), true);
+        if (organization.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Organization organizationMapped = organization.orElseThrow(RuntimeException::new);
+        List<User> userList = organizationMapped.getUsers();
+        User user = userToAdd.orElseThrow(RuntimeException::new);
+        userList.add(user);
+        organizationMapped.setUsers(userList);
+        organizationMapped.setCountUser(organizationMapped.getCountUser()+1);
+        organizationRepository.save(organizationMapped);
+        user.setOrganization(organizationMapped);
+        userRepository.save(user);
+        return Optional.ofNullable(mapper.toDto(organizationMapped));
+    }
+
+    public Optional<OrganizationDto> removeUser(String name) {
+        Optional<User> owner = userRepository.findByUsername(securityContext.getName());
+        if (owner.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Optional<User> userToRemove = userRepository.findByUsername(name);
+        if (userToRemove.isEmpty()) {
+            return Optional.empty();
+        }
+        User user = userToRemove.orElseThrow(RuntimeException::new);
+        User ownerMapped = owner.orElseThrow(RuntimeException::new);
+        if (user.getOrganization() == null) {
+            return Optional.empty();
+        }
+        if (user.getOrganization().getId() != ownerMapped.getOrganization().getId()) {
+            return Optional.empty();
+        }
+
+        Optional<Organization> organization = organizationRepository.findByOwnerAndIsActive(ownerMapped, true);
+        if (organization.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Organization organizationMapped = organization.orElseThrow(RuntimeException::new);
+        List<User> userList = organizationMapped.getUsers();
+        userList.remove(user);
+        organizationMapped.setUsers(userList);
+        organizationMapped.setCountUser(organizationMapped.getCountUser()-1);
+        Organization testorg = organizationRepository.save(organizationMapped);
+        user.setOrganization(null);
+        userRepository.save(user);
+
+        return Optional.ofNullable(mapper.toDto(testorg));
     }
 
     private Boolean isMember(List<User> userList, String username) {

@@ -9,8 +9,6 @@ import java.util.stream.Collectors;
 
 public class MapperUser {
 
-    private User user = new User();
-
     public UserDto toDto(User user) {
         return new UserDto(user.getId(),
                 user.getUsername(),
@@ -21,6 +19,7 @@ public class MapperUser {
     }
 
     public User toUser(UserCreationDto userDTO) {
+        User user = new User();
         user.setUsername(userDTO.getName());
         user.setPassword(userDTO.getPass());
         user.setMail(userDTO.getMail());
@@ -33,6 +32,7 @@ public class MapperUser {
     }
 
     public User toUser(User userMap) {
+        User user = new User();
         user.setId(userMap.getId());
         user.setUsername(userMap.getUsername());
         user.setPassword(userMap.getPassword());

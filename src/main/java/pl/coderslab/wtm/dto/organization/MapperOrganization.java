@@ -1,16 +1,12 @@
 package pl.coderslab.wtm.dto.organization;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import pl.coderslab.wtm.dto.Mapper;
-import pl.coderslab.wtm.dto.user.MapperUser;
 import pl.coderslab.wtm.repository.entity.Organization;
+import pl.coderslab.wtm.repository.entity.Team;
 import pl.coderslab.wtm.repository.entity.User;
 
 import java.util.stream.Collectors;
 
 public class MapperOrganization {
-
-    private Organization organization = new Organization();
 
     public OrganizationDto toDto(Organization organization) {
         return new OrganizationDto(organization.getId(),
@@ -18,10 +14,11 @@ public class MapperOrganization {
                 organization.getOwner().getUsername(),
                 organization.getUsers().stream().map(User::getUsername).collect(Collectors.toList()),
                 organization.getCountUser(),
-                organization.getTeamList());
+                organization.getTeamList().stream().map(Team::getName).collect(Collectors.toList()));
     }
 
     public Organization toOrganization(OrganizationCreationDto organizationDTO) {
+        Organization organization = new Organization();
         organization.setName(organizationDTO.getName());
         organization.setActive(organizationDTO.getActive());
         organization.setOwner(organizationDTO.getOwner());
@@ -32,6 +29,7 @@ public class MapperOrganization {
     }
 
     public Organization toOrganization(Organization organizationMap) {
+        Organization organization = new Organization();
         organization.setId(organizationMap.getId());
         organization.setName(organizationMap.getName());
         organization.setActive(organizationMap.getActive());
