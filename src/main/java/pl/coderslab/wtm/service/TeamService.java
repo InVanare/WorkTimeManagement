@@ -111,7 +111,7 @@ public class TeamService {
         teamMapped.setOrganization(organization.get());
         teamMapped.setMembers(List.of(user));
         save(teamMapped);
-        user.setTeamCount(user.getTeamCount()+1);
+        user.setTeamCount(user.getTeamCount() + 1);
         userRepository.save(user);
         return Optional.ofNullable(mapper.toDto(teamMapped));
     }
@@ -142,6 +142,48 @@ public class TeamService {
             }
         }
 
+        return Optional.empty();
+    }
+
+    public Optional<TeamDto> addUser(String userName, String teamName) {
+        if (userName.length() < 5 || teamName.length() < 3) {
+            return Optional.empty();
+        }
+
+        Optional<User> owner = userRepository.findByUsername(securityContext.getName());
+        if (owner.isEmpty()) {
+            return Optional.empty();
+        }
+        User ownerMapped = owner.orElseThrow(RuntimeException::new);
+
+        Optional<User> userToAdd = userRepository.findByUsername(userName);
+        if (userToAdd.isEmpty()) {
+            return Optional.empty();
+        }
+
+        List<Optional<Team>> teams = teamRepository.findAllByOwnerAndIsActive(ownerMapped, true);
+        if (teams.isEmpty()) {
+            return Optional.empty();
+        }
+
+        for (Optional<Team> singleTeam : teams) {
+            Team team = singleTeam.orElseThrow(RuntimeException::new);
+            if (team.getName().equals(teamName)) {
+                User user = userToAdd.orElseThrow(RuntimeException::new);
+                List<User> userList = team.getMembers();
+                if (isMember(userList, userName)) {
+                    return Optional.empty();
+                }
+                if (user.getOrganization() != null && ownerMapped.getOrganization().getId() == user.getOrganization().getId()) {
+                    userList.add(user);
+                    team.setMembers(userList);
+                    teamRepository.save(team);
+                    user.setTeamCount(user.getTeamCount() + 1);
+                    userRepository.save(user);
+                    return Optional.ofNullable(mapper.toDto(team));
+                }
+            }
+        }
         return Optional.empty();
     }
 

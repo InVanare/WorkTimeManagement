@@ -31,7 +31,7 @@ public class TeamApi {
         return ResponseEntity.of(teamService.findById(id));
     }
 
-    @GetMapping("/get/teamname/{name}")
+    @GetMapping("/get/name/{name}")
     public ResponseEntity<TeamDto> getTeamByName(@PathVariable String name) {
         return ResponseEntity.of(teamService.findByName(name));
     }
@@ -41,6 +41,10 @@ public class TeamApi {
         return ResponseEntity.ok(teamService.getTeamByMe());
     }
 
+    @GetMapping("/add/user/{username}/team/{teamname}")
+    public ResponseEntity<TeamDto> addUserToTeam(@PathVariable String username,@PathVariable String teamname) {
+        return ResponseEntity.of(teamService.addUser(username, teamname));
+    }
     @PostMapping("/create")
     public ResponseEntity<TeamDto> addTeam(@Valid @RequestBody TeamCreationDto teamCreation) {
         return ResponseEntity.of(teamService.create(teamCreation));
