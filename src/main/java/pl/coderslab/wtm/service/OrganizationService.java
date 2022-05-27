@@ -167,11 +167,11 @@ public class OrganizationService {
         userList.remove(user);
         organizationMapped.setUsers(userList);
         organizationMapped.setCountUser(organizationMapped.getCountUser()-1);
-        Organization testorg = organizationRepository.save(organizationMapped);
+        organizationRepository.save(organizationMapped);
         user.setOrganization(null);
         userRepository.save(user);
 
-        return Optional.ofNullable(mapper.toDto(testorg));
+        return Optional.ofNullable(mapper.toDto(organizationMapped));
     }
 
     private Boolean isMember(List<User> userList, String username) {

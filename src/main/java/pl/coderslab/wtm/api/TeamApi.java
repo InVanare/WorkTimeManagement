@@ -45,6 +45,12 @@ public class TeamApi {
     public ResponseEntity<TeamDto> addUserToTeam(@PathVariable String username,@PathVariable String teamname) {
         return ResponseEntity.of(teamService.addUser(username, teamname));
     }
+
+    @GetMapping("/remove/user/{username}/team/{teamname}")
+    public ResponseEntity<TeamDto> removeUserFromTeam(@PathVariable String username, @PathVariable String teamname) {
+        return ResponseEntity.of(teamService.removeUser(username, teamname));
+    }
+
     @PostMapping("/create")
     public ResponseEntity<TeamDto> addTeam(@Valid @RequestBody TeamCreationDto teamCreation) {
         return ResponseEntity.of(teamService.create(teamCreation));
