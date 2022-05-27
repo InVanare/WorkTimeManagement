@@ -10,6 +10,14 @@ import java.util.stream.Collectors;
 public class MapperUser {
 
     public UserDto toDto(User user) {
+        if (user.getOrganization() == null) {
+            return new UserDto(user.getId(),
+                    user.getUsername(),
+                    user.getMail(),
+                    user.getLastLogin(),
+                    null,
+                    user.getTeamCount());
+        }
         return new UserDto(user.getId(),
                 user.getUsername(),
                 user.getMail(),
