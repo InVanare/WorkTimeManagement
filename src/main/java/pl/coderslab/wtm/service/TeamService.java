@@ -117,9 +117,6 @@ public class TeamService {
     }
 
     public Optional<TeamDto> update(TeamUpdateDto teamUpdate) {
-        System.out.println(teamUpdate.getNameTeam());
-        System.out.println(teamUpdate.getNameToUpdate());
-        System.out.println(teamUpdate.getActive());
         Optional<User> user = userRepository.findByUsername(securityContext.getName());
         List<Optional<Team>> team = teamRepository.findAllByOwnerAndIsActive(user.orElseThrow(RuntimeException::new), true);
         if (team.isEmpty()) {

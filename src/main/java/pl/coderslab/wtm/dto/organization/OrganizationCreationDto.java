@@ -3,12 +3,14 @@ package pl.coderslab.wtm.dto.organization;
 import pl.coderslab.wtm.repository.entity.Team;
 import pl.coderslab.wtm.repository.entity.User;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class OrganizationCreationDto {
 
+    @NotEmpty
     @Pattern(regexp = "^(?=.*[A-Za-z])[A-Za-z\\d]{2,20}$")
     private String name;
     private Boolean isActive;

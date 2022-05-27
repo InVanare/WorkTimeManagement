@@ -16,13 +16,15 @@ public class Presence {
     private User user;
     @OneToOne
     private Organization organization;
+    private Boolean finished;
 
-    public Presence(Long id, LocalDateTime start, LocalDateTime end, User user, Organization organization) {
+    public Presence(Long id, LocalDateTime start, LocalDateTime end, User user, Organization organization, Boolean finished) {
         this.id = id;
         this.start = start;
         this.end = end;
         this.user = user;
         this.organization = organization;
+        this.finished = finished;
     }
 
     public Presence() {
@@ -66,5 +68,13 @@ public class Presence {
 
     public void setOrganization(Organization organization) {
         this.organization = organization;
+    }
+
+    public Boolean getFinished() {
+        return finished;
+    }
+
+    public void setFinished(Boolean finished) {
+        this.finished = finished;
     }
 }

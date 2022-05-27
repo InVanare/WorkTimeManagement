@@ -10,6 +10,9 @@ import pl.coderslab.wtm.dto.presence.PresenceUpdateDto;
 import pl.coderslab.wtm.repository.entity.Presence;
 import pl.coderslab.wtm.service.PresenceService;
 
+import javax.validation.Valid;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/presence")
 public class PresenceApi {
@@ -23,20 +26,23 @@ public class PresenceApi {
         this.mapper = mapper;
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/get/id/{id}")
     public ResponseEntity<PresenceDto> getPresence(@PathVariable Long id) {
         return ResponseEntity.of(presenceService.findById(id));
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<PresenceDto> addPresence(@RequestBody PresenceCreationDto presenceCreation) {
-        Presence presence = mapper.toPresence(presenceCreation);
-        presenceService.save(presence);
-        return ResponseEntity.ok(mapper.toDto(presence));
+    @GetMapping("/get/user/{name}")
+    public ResponseEntity<List<PresenceDto>> getPresenceFromUser(@PathVariable String name) {
+        return ResponseEntity.ok(presenceService.findByUser(name));
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<PresenceDto> updatePresence(@RequestBody PresenceUpdateDto presence) {
-        return ResponseEntity.of(presenceService.update(presence));
+    @GetMapping("/start")
+    public ResponseEntity<PresenceDto> startPresence() {
+        return ResponseEntity.of(presenceService.startPresence());
+    }
+
+    @GetMapping("/finish")
+    public ResponseEntity<PresenceDto> endPresence() {
+        return ResponseEntity.of(presenceService.endPresence());
     }
 }
