@@ -22,16 +22,38 @@ This project uses the MySQL database. Support for handling was Hibernate and Spr
 | /api/user/get/id/{id} | Get user data by id (only ADMIN) | YES | GET | - |
 | /api/user/get/username/{username} | Get user data by name (only own) | YES | GET | - |
 | /api/user/get/my | Get own user data  | YES | GET | - |
-| /api/user/update/password | Update password | YES | GET | pass** |
-| /api/user/update/mail | Update email | YES | GET | mail |
-| /api/user/update/active | Update account deactivation | YES | GET | active*** |
+| /api/user/update/password | Update password | YES | PUT | pass** |
+| /api/user/update/mail | Update email | YES | PUT | mail |
+| /api/user/update/active | Update account deactivation | YES | PUT | active*** |
+|  ---  |    ---    | --- |     ---     |    ---    |
+| /api/organization/create | Create organization | YES | POST | name* |
+| /api/organization/get/id/{id} | Get organization data by id (only ADMIN) | YES | GET | - |
+| /api/organization/get/name/{name} | Get organization data by name (only own) | YES | GET | - |
+| /api/organization/get/my | Get current organization data  | YES | GET | - |
+| /api/organization/add/user/{name} | Add user to organization | YES | GET | - |
+| /api/organization/remove/user/{name} | Remove user from organization| YES | GET | - |
+| /api/organization/update | Update organization | YES | PUT | name* <br> active*** |
+|  ---  |    ---    | --- |     ---     |    ---    |
+| /api/team/create | Registration | YES | POST | name* |
+| /api/team/get/id/{id} | Get team data by id (only ADMIN) | YES | GET | - |
+| /api/team/get/name/{name} | Get team data by name (only own) | YES | GET | - |
+| /api/team/get/my | Get teams data  | YES | GET | - |
+| /api/team/add/user/{username}/team/{teamname} | Add user to team | YES | GET | - |
+| /api/team/remove/user/{username}/team/{teamname} | Remove user from team| YES | GET | - |
+| /api/team/update | Update team | YES | PUT | nameTeam* <br> nameToUpdate* <br> active*** |
+|  ---  |    ---    | --- |     ---     |    ---    |
+| /api/presence/get/id/{id} | Get presence data by id (only ADMIN) | YES | GET | - |
+| /api/presence/get/user/{name} | Get  presence list by name | YES | GET | - |
+| /api/presence/start | Begin own presence | YES | GET | - |
+| /api/presence/end | End own presence | YES | GET | - |
 
-\* \- username must consist of: 
+\* \- must consist of: 
 - [a-z], [A-Z], [1-9]
 - min. 1 letter
 - min. 5 characters
 - max. 20 characters
-\* \- password must consist of: 
+
+\** \- must consist of: 
 - [a-z], [A-Z], [1-9], [@$!%*?&]
 - min. 1 uppercase letter
 - min. 1 lowercase letter
@@ -39,7 +61,8 @@ This project uses the MySQL database. Support for handling was Hibernate and Spr
 - min. 1 special character
 - min. 5 characters
 - max. 20 characters
-\* \- only true or false
+
+\*** \- only true or false
 ## Technologies
 Project is created with:
 * Java version: 18
