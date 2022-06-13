@@ -14,8 +14,8 @@ The task of this project is to prepare the REST API interface to support the wor
 Spring Security was used in this project. Access to all resources has been blocked except login and user registration. JWT (JSON Web Token) technology was used, which is used to identify logged in users. Authentication and authorization are done using filters. Administrator and user rights have been entered.
 ## Database
 This project uses the MySQL database. Support for handling was Hibernate and Spring Data.
-## Command
-| Command | Description | Auth  | HTTP Protocol | Require key |
+## Endpoints
+| Endpoints | Description | Auth  | HTTP Protocol | Require key |
 |  :---:  |    :---:    | :---: |     :---:     |    :---:    |
 | /login  | Logging in        | NO    |      GET      | username <br> password | 
 | /api/user/register | Registration | NO | POST | name* <br> pass** <br> mail |
