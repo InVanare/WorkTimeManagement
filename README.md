@@ -4,7 +4,7 @@ Work Time Management REST API.
 * [General info](#general-info)
 * [Security](#security)
 * [Database](#database)
-* [Command](#command)
+* [Endpoints](#endpoints)
 * [Technologies](#technologies)
 * [Inspiration](#inspiration)
 * [Copyright](#copyright)
